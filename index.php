@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 	<meta charset="UTF-8">
-	<title>warewolf</title>
+	<title>werewolf</title>
 </head>
 <body>
 	<h1>人狼プロジェクト</h1>
