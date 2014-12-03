@@ -1,5 +1,4 @@
 // 1.モジュールオブジェクトの初期化
-var fs = require("fs");
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
