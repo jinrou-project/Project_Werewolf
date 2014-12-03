@@ -1,14 +1,19 @@
 // 1.モジュールオブジェクトの初期化
 var fs = require("fs");
-var server = require("http").createServer(function(req, res) {
-     res.writeHead(200, {"Content-Type":"text/html"});
-     var output = fs.readFileSync("./index.html", "utf-8");
-     res.end(output);
-}).listen(8080);
-var io = require("socket.io").listen(server);
+var express = require('express');
+var app = express();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+http.listen(8080,function(){
+    console.log('listen 8080 port');
+});
 
 // ユーザ管理ハッシュ
 var userHash = {};
+
+//ルーティング
+app.use(express.static(__dirname + '/'));
+app.use(express.static(__dirname + '/css/'));
 
 // 2.イベントの定義
 io.sockets.on("connection", function (socket) {
