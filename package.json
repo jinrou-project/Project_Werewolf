@@ -1,0 +1,27 @@
+{
+  "name": "Werewolf",
+  "version": "0.0.0",
+  "description": "ja",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.10.4",
+    "socket.io": "^1.2.1",
+    "connect": "^3.3.3",
+    "ejs": "^1.0.0",
+    "fs": "^0.0.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jinrou-project/Project_Werewolf.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jinrou-project/Project_Werewolf/issues"
+  },
+  "homepage": "https://github.com/jinrou-project/Project_Werewolf"
+}
