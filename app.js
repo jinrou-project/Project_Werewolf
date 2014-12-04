@@ -1,4 +1,4 @@
-// 1.モジュールオブジェクトの初期化
+// モジュール読み込み
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -7,15 +7,21 @@ http.listen(8080,function(){
     console.log('listen 8080 port');
 });
 
+
 // ユーザ管理ハッシュ
 var userHash = {};
+//接続数のカウンタ
+var counter = 0;
 
 //ルーティング
 app.use(express.static(__dirname + '/'));
 app.use(express.static(__dirname + '/css/'));
 
-// 2.イベントの定義
+// イベントの定義
 io.sockets.on("connection", function (socket) {
+  counter++;
+  console.log("connect:" + counter);
+
 
   // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
   socket.on("connected", function (name) {
