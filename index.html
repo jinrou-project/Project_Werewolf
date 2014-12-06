@@ -51,7 +51,7 @@
         var msgArea = document.getElementById("msg");
         var domMeg = document.createElement('div');
         domMeg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
-        msgArea.appendChild(domMeg);
+        msgArea.insertBefore(domMeg,msgArea.firstChild);
     }
 
     // 3.開始処理
