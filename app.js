@@ -42,5 +42,7 @@ io.sockets.on("connection", function (socket) {
       delete userHash[socket.id];
       io.sockets.emit("publish", {value: msg});
     }
+    counter--;
+    console.log("connect:" + counter);
   });
 });

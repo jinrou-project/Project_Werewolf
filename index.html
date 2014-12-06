@@ -1,31 +1,48 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>チャット</title>
+    <title>JINROU</title>
 </head>
 <body>
+	<h1>JINROU</h1>
     <div id="loginForm">
-        <input type ="text" id="name_input">
+        <input type ="text" id="name_input" autofocus onKeyPress="enterName();">
         <button onclick="entry();">入室</button><br>
     </div>
 
-
+	<div id="nameArea"></div>
     <div id="formArea"></div>
     <div id="msg"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
 
     var myName;
-
+    //エンターキーをおした時の操作
+    function enterName(){
+    	if(window.event.keyCode == 13){
+    		entry();
+    	}
+    }
+    function enterMsg(){
+    	if(window.event.keyCode == 13){
+    		publishMessage();
+    	}
+    }
+    //入室時の処理
     function entry(){
         myName = document.getElementById('name_input').value;
         var domForm = document.getElementById('formArea');
-        domForm.innerHTML = '<input type="text" id="msg_input" style="width:200px;" /><button onclick="publishMessage();">語る</button>';
+        domForm.innerHTML = '<input type="text" id="msg_input" style="width:200px;" autofocus onKeyPress="enterMsg();"><button onclick="publishMessage();">語る</button>';
         login(myName);
         var lf = document.getElementById('loginForm');
+        //名前入力欄削除
         while(lf.firstChild){
             lf.removeChild(lf.firstChild);
         }
+        var nameArea = document.getElementById('nameArea');
+        var domName = document.createElement('p');
+        domName.innerHTML = 'ようこそ' + myName + 'さん';
+        nameArea.appendChild(domName);
     }
 
     // 1.イベントとコールバックの定義
@@ -57,7 +74,7 @@
     // 3.開始処理
     function login(name){
         var myName = name + "さん";
-        addMessage("貴方は" + name + "として入室しました");
+        //addMessage("貴方は" + name + "として入室しました");
         start(myName);
     }
     </script>
