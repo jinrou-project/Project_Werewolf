@@ -34,16 +34,16 @@ io.sockets.on("connection", function (socket) {
         joinUser++;
         console.log('user:' + joinUser);
         var msg = name + "が入室しました";
+        //line.push(msg);
         userHash[socket.id] = name;
         io.sockets.emit("publish", {value: msg});
-        line.push(msg);
     });
 
     // メッセージ送信カスタムイベント    
     socket.on("publish", function (data) {
-    io.sockets.emit("publish", {value:data.value});
-    line.push(data.value);
-    console.log(line);
+        io.sockets.emit("publish", {value:data.value});
+        line.push(data.value);
+        console.log(line);
     });
 
 
@@ -58,5 +58,9 @@ io.sockets.on("connection", function (socket) {
     }
     counter--;
     console.log("connect:" + counter);
+    //ログインユーザーがいなくなったら配列を空にする
+    if(joinUser === 0){
+        line.length = 0;
+    }
     });
 });
