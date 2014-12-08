@@ -1,4 +1,4 @@
-// モジュール読み込み
+﻿// モジュール読み込み
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
