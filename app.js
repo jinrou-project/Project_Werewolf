@@ -21,7 +21,7 @@ app.use(express.static(__dirname + '/css/'));
 io.sockets.on("connection", function (socket) {
   counter++;
   console.log("connect:" + counter);
-
+  socket.emit("connNum", counter);
 
   // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
   socket.on("connected", function (name) {
