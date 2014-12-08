@@ -6,6 +6,7 @@
 <body>
 	<h1>JINROU</h1>
     <div id="num"></div>
+    <div id="test"></div>
     <div id="loginForm">
         <input type ="text" id="name_input" autofocus onKeyPress="enterName();">
         <button onclick="entry();">入室</button><br>
@@ -44,15 +45,20 @@
         var domName = document.createElement('p');
         domName.innerHTML = 'ようこそ' + myName + 'さん';
         nameArea.appendChild(domName);
-        socketio.emit("entry", domName);
-    	socketio.on("entry",function(data){
-    		console.log(data.value);
-    	});
+        //socketio.emit("entry", domName);
+        socketio.emit("line",null);
     }
+
 
     // 1.イベントとコールバックの定義
     var socketio = io.connect('http://localhost:8080');
     var num;
+
+    socketio.on("line", function(data){
+    	data.forEach(function(a){
+			addMessage(a);
+    	});
+    });
 
     socketio.on("connected", function(name) {});
     socketio.on("publish", function (data) { addMessage(data.value); });
@@ -77,9 +83,9 @@
 
     function addMessage (msg) {
         var msgArea = document.getElementById("msg");
-        var domMeg = document.createElement('div');
-        domMeg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
-        msgArea.insertBefore(domMeg,msgArea.firstChild);
+        var domMsg = document.createElement('div');
+        domMsg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
+        msgArea.insertBefore(domMsg,msgArea.firstChild);
     }
 
     // 3.開始処理

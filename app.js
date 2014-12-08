@@ -10,7 +10,7 @@ http.listen(8080,function(){
 
 // ユーザ管理ハッシュ
 var userHash = {};
-var line = new Array();
+var line = [];
 //接続数のカウンタ
 var counter = 0;
 
@@ -20,29 +20,31 @@ app.use(express.static(__dirname + '/css/'));
 
 // イベントの定義
 io.sockets.on("connection", function (socket) {
-  counter++;
-  console.log("connect:" + counter);
-  socket.emit("connNum", counter);
+    counter++;
+    console.log("connect:" + counter);
+    socket.emit("connNum", counter);
+    socket.on("line", function(){
+        socket.emit("line", line);
+    });
 
-  // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
-  socket.on("connected", function (name) {
+    // 接続開始カスタムイベント(接続元ユーザを保存し、他ユーザへ通知)
+    socket.on("connected", function (name) {
     var msg = name + "が入室しました";
     userHash[socket.id] = name;
     io.sockets.emit("publish", {value: msg});
-  });
+    line.push(msg);
+    });
 
-  // メッセージ送信カスタムイベント    
-  socket.on("publish", function (data) {
+    // メッセージ送信カスタムイベント    
+    socket.on("publish", function (data) {
     io.sockets.emit("publish", {value:data.value});
     line.push(data.value);
-  });
+    console.log(line);
+    });
 
-  socket.on("entry", function(data){
-    io.sokets.emit("entry", {value:line});
-  });
 
-  // 接続終了組み込みイベント(接続元ユーザを削除し、他ユーザへ通知)
-  socket.on("disconnect", function () {
+    // 接続終了組み込みイベント(接続元ユーザを削除し、他ユーザへ通知)
+    socket.on("disconnect", function () {
     if (userHash[socket.id]) {
       var msg = userHash[socket.id] + "が退出しました";
       delete userHash[socket.id];
@@ -50,5 +52,5 @@ io.sockets.on("connection", function (socket) {
     }
     counter--;
     console.log("connect:" + counter);
-  });
+    });
 });
