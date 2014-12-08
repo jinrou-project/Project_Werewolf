@@ -10,6 +10,7 @@ http.listen(8080,function(){
 
 // ユーザ管理ハッシュ
 var userHash = {};
+var line = new Array();
 //接続数のカウンタ
 var counter = 0;
 
@@ -30,9 +31,14 @@ io.sockets.on("connection", function (socket) {
     io.sockets.emit("publish", {value: msg});
   });
 
-  // メッセージ送信カスタムイベント
+  // メッセージ送信カスタムイベント    
   socket.on("publish", function (data) {
     io.sockets.emit("publish", {value:data.value});
+    line.push(data.value);
+  });
+
+  socket.on("entry", function(data){
+    io.sokets.emit("entry", {value:line});
   });
 
   // 接続終了組み込みイベント(接続元ユーザを削除し、他ユーザへ通知)

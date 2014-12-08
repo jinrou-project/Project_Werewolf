@@ -44,6 +44,10 @@
         var domName = document.createElement('p');
         domName.innerHTML = 'ようこそ' + myName + 'さん';
         nameArea.appendChild(domName);
+        socketio.emit("entry", domName);
+    	socketio.on("entry",function(data){
+    		console.log(data.value);
+    	});
     }
 
     // 1.イベントとコールバックの定義
