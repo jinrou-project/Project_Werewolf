@@ -56,7 +56,7 @@
 
 
     // 1.イベントとコールバックの定義
-    var socketio = io.connect('http://localhost:8080');
+    var socketio = io.connect(location.href);
     var num;
 
     socketio.on("line", function(data){
