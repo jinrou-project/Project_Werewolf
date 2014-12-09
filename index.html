@@ -1,4 +1,5 @@
-<html>
+<!DOCTYPE html>
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>JINROU</title>
@@ -9,7 +10,7 @@
     <div id="num"></div>
     <div id="loginForm">
         <input type ="text" id="name_input" autofocus onKeyPress="enterName();">
-        <button onclick="entry();">入室</button><br>
+        <button id="entry" onclick="entry();">入室</button><br>
     </div>
 
 	<div id="nameArea"></div>
@@ -19,6 +20,22 @@
     <script type="text/javascript">
 
     var myName;
+
+    // 音楽ファイル再生のためのオブジェクトの初期化
+    var addSound = new Audio();
+    // 音楽ファイルの設定
+    addSound.src = 'se/se01.wav';
+
+    //　便利かな？
+    function $(id){
+        return document.getElementById(id);
+    }
+    
+    //　テスト
+    $('entry').onclick = function(){
+        addSound.play();
+    }
+
     //エンターキーをおした時の操作
     function enterName(){
     	if(window.event.keyCode == 13){
@@ -30,6 +47,7 @@
     		publishMessage();
     	}
     }
+
     //入室時の処理
     function entry(){
         myName = $('#name_input').val();
