@@ -2,6 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <title>JINROU</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
 	<h1>JINROU</h1>
@@ -31,20 +32,25 @@
     }
     //入室時の処理
     function entry(){
-        myName = document.getElementById('name_input').value;
-        var domForm = document.getElementById('formArea');
+        myName = $('#name_input').val();
+
+        //var domForm = document.getElementById('formArea');
+        var domForm = $('#formArea').get(0);
         domForm.innerHTML = '<input type="text" id="msg_input" style="width:200px;" autofocus onKeyPress="enterMsg();"><button onclick="publishMessage();">語る</button>';
         login(myName);
-        var lf = document.getElementById('loginForm');
+        //var lf = document.getElementById('loginForm');
+        var lf = $('#loginForm').get(0);
         //名前入力欄削除
         while(lf.firstChild){
             lf.removeChild(lf.firstChild);
         }
-        var nameArea = document.getElementById('nameArea');
-        var domName = document.createElement('p');
+        //var nameArea = document.getElementById('nameArea');
+        var nameArea = $('#nameArea').get(0);
+        //var domName = document.createElement('p');
+        var domName = $('<p>').get(0);
         domName.innerHTML = 'ようこそ' + myName + 'さん';
         nameArea.appendChild(domName);
-        //socketio.emit("entry", domName);
+        //socketio.emit("entry", domName);;
         socketio.emit("line",null);
     }
 
@@ -63,7 +69,8 @@
     socketio.on("connNum", function (data) {
         console.log(data);
         num = data.toString();
-        document.getElementById("num").innerHTML = num;       
+        //document.getElementById("num").innerHTML = num;       
+        $('num').innerHTML = num;
     });
 
     // 2.イベントに絡ませる関数の定義
@@ -72,15 +79,18 @@
     }
 
     function publishMessage() {
-        var textInput = document.getElementById('msg_input');
+        //var textInput = document.getElementById('msg_input');
+        var textInput = $('#msg_input').get(0);
         var msg = "[" + myName + "] " + textInput.value;
         socketio.emit("publish", {value: msg});
         textInput.value = '';
     }
 
     function addMessage (msg) {
-        var msgArea = document.getElementById("msg");
-        var domMsg = document.createElement('div');
+        // var msgArea = document.getElementById("msg");
+        var msgArea = $('#msg').get(0);
+        // var domMsg = document.createElement('div');
+        var domMsg = $('<div>').get(0);
         domMsg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
         msgArea.insertBefore(domMsg,msgArea.firstChild);
     }
