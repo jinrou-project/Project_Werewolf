@@ -30,8 +30,8 @@
         entry();
     });
     //エンターキーをおした時の操作
-    $('#nameInput').keypress(function(){
-        if(window.event.keyCode == 13){
+    $('#nameInput').keypress(function(e){
+        if(e.keyCode == 13){
             addSound.play();
             entry();
         }
@@ -41,8 +41,8 @@
         publishMessage();
     });
     //メッセージのテキストボックスでエンターキーを押したときの処理
-    $(document).on('keypress', '#msgInput', function(){
-        if(window.event.keyCode == 13){
+    $(document).on('keypress', '#msgInput', function(e){
+        if(e.keyCode == 13){
             publishMessage();
         }
     });
