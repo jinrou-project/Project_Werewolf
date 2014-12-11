@@ -6,130 +6,104 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 </head>
 <body>
-	<h1>JINROU</h1>
+    <h1>JINROU</h1>
     <div id="num"></div>
     <div id="loginForm">
         <input type ="text" id="nameInput" autofocus>
         <button id="entry">入室</button><br>
     </div>
 
-	<div id="nameArea"></div>
+    <div id="nameArea"></div>
     <div id="formArea"></div>
     <div id="msg"></div>
     <script src="/socket.io/socket.io.js"></script>
     <script type="text/javascript">
-
     var myName;
-
     // 音楽ファイル再生のためのオブジェクトの初期化
     var addSound = new Audio();
     // 音楽ファイルの設定
     addSound.src = 'se/se01.wav';
     
-    //　テスト
+    //入室ボタンを押したときの処理　
     $('#entry').click(function(){
         addSound.play();
         entry();
     });
-    // $('#enterMsg').click(function(){
-    //     publishMessage();
-    // });
-
     //エンターキーをおした時の操作
     $('#nameInput').keypress(function(){
-    	if(window.event.keyCode == 13){
+        if(window.event.keyCode == 13){
             addSound.play();
-    		entry();
-    	}
+            entry();
+        }
     });
-    // $('#msgInput').keypress(function(){
-    // 	if(window.event.keyCode == 13){
-    // 		publishMessage();
-    // 	}
-    // });
-    function msgInput(){
+    //話すボタンをクリックした時の処理
+    $(document).on('click', '#enterMsg', function(){
+        publishMessage();
+    });
+    //メッセージのテキストボックスでエンターキーを押したときの処理
+    $(document).on('keypress', '#msgInput', function(){
         if(window.event.keyCode == 13){
             publishMessage();
         }
-    }
-
+    });
     //入室時の処理
     function entry(){
         myName = $('#nameInput').val();
-
-        //var domForm = document.getElementById('formArea');
         var domForm = $('#formArea').get(0);
-        domForm.innerHTML = '<input type="text" id="msgInput" style="width:200px;" onKeypress="msgInput()"; autofocus><button onClick="publishMessage();">話す</button>';
-        // var input = document.createElement('input');
-        // input.id = "msgInput";
-        // var button = document.createElement('button');
-        // button.id = "enterMsg";
-        // button.innerHTML = "話す";
-        // var obj = document.getElementById('formArea');
-        // obj.appendChild(input);
-        // obj.appendChild(button);
+        //input要素生成
+        var input = $('<input autofocus>');
+        input.attr('id', 'msgInput');
+        //button要素生成
+        var button = $('<button>');
+        button.attr('id', 'enterMsg');
+        button.html("話す");
+        //formAreaに生成した要素を追加
+        $('#formArea').append(input).append(button);
         login(myName);
-        //var lf = document.getElementById('loginForm');
         var lf = $('#loginForm').get(0);
         //名前入力欄削除
         while(lf.firstChild){
             lf.removeChild(lf.firstChild);
         }
-        //var nameArea = document.getElementById('nameArea');
         var nameArea = $('#nameArea').get(0);
-        //var domName = document.createElement('p');
         var domName = $('<p>').get(0);
         domName.innerHTML = 'ようこそ' + myName + 'さん';
         nameArea.appendChild(domName);
-        //socketio.emit("entry", domName);;
         socketio.emit("line",null);
     }
-
-
     // 1.イベントとコールバックの定義
     var socketio = io.connect(location.href);
     var num;
-
     socketio.on("line", function(data){
-    	data.forEach(addMessage);
+        data.forEach(addMessage);
     });
-
     socketio.on("connected", function(name) {});
     socketio.on("publish", function (data) { addMessage(data.value); });
     socketio.on("disconnect", function () {});
     socketio.on("connNum", function (data) {
         console.log(data);
-        num = data.toString();
-        //document.getElementById("num").innerHTML = num;       
+        num = data.toString();       
         $('num').innerHTML = num;
     });
-
     // 2.イベントに絡ませる関数の定義
     function start(name) {
         socketio.emit("connected", name);
     }
-
     function publishMessage() {
-        //var textInput = document.getElementById('msg_input');
         var textInput = $('#msgInput').get(0);
         var msg = "[" + myName + "] " + textInput.value;
         socketio.emit("publish", {value: msg});
         textInput.value = '';
     }
-
     function addMessage (msg) {
-        // var msgArea = document.getElementById("msg");
         var msgArea = $('#msg').get(0);
-        // var domMsg = document.createElement('div');
         var domMsg = $('<div>').get(0);
         domMsg.innerHTML = new Date().toLocaleTimeString() + ' ' + msg;
         msgArea.insertBefore(domMsg,msgArea.firstChild);
     }
-
     // 3.開始処理
     function login(name){
         var myName = name + "さん";
-        //addMessage("貴方は" + name + "として入室しました");
         start(myName);
     }
     </script>
