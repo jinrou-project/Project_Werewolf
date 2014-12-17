@@ -34,9 +34,9 @@ io.sockets.on("connection", function (socket) {
         joinUser++;
         console.log('user:' + joinUser);
         var msg = name + "が入室しました";
-        //line.push(msg);
         userHash[socket.id] = name;
         io.sockets.emit("publish", {value: msg});
+        //line.push(msg);
     });
 
     // メッセージ送信カスタムイベント    
